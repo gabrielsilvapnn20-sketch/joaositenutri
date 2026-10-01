@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+  <rect width="600" height="800" fill="#2a2c26"/>
+  <g stroke="#3a3c35" stroke-width="1">
+    <path d="M0 200H600M0 400H600M0 600H600M150 0V800M300 0V800M450 0V800"/>
+  </g>
+  <g fill="#6d6a60">
+    <ellipse cx="300" cy="150" rx="52" ry="64"/>
+    <path d="M196 250c30-24 178-24 208 0l34 250c4 40-20 70-60 74H222c-40-4-64-34-60-74z"/>
+    <path d="M220 560h70l-6 220h-52zM310 560h70l-12 220h-52z"/>
+  </g>
+  <text x="24" y="40" fill="#ECE9E1" font-family="monospace" font-size="18" letter-spacing="3">FOTO ANTES · PLACEHOLDER</text>
+</svg>
