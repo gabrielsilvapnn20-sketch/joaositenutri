@@ -5,17 +5,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: { DEFAULT: "#0D0E0C", 2: "#151713", 3: "#1E201B" },
-        bone: { DEFAULT: "#ECE9E1", 2: "#D9D5CA" },
-        mute: "#8B8980",
-        signal: { DEFAULT: "#FF5A1F", soft: "#FF8A5C" },
-        line: "rgba(236,233,225,0.12)",
+        paper: { DEFAULT: "#F8F7F2", 2: "#F0EEE6" },
+        mint: { DEFAULT: "#E2F1E5", 2: "#CDE8D4" },
+        leaf: { DEFAULT: "#2E9C5A", deep: "#114E2F", soft: "#7CC596" },
+        ink: { DEFAULT: "#16271D", 2: "#3A4A40" },
+        mute: "#6E7B72",
+        sand: "#F2EADA",
+        sun: "#F4C152",
+        line: "rgba(22,39,29,0.12)",
       },
       fontFamily: {
-        display: ["var(--font-display)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
-      letterSpacing: { tightest: "-0.055em" },
+      borderRadius: { blob: "42% 58% 55% 45% / 48% 42% 58% 52%" },
+      boxShadow: {
+        soft: "0 1px 2px rgba(22,39,29,.04), 0 12px 32px -12px rgba(22,39,29,.18)",
+      },
     },
   },
   plugins: [],

@@ -14,20 +14,24 @@ Deploy recomendado: **Vercel** (importe o repositório e copie as variáveis do 
 
 ## O que tem no site
 
+Landing page leve, nas cores do João (branco e verde). O quiz não é o caminho principal: ele **abre em nova aba** para quem quiser se aprofundar.
+
 | Parte | Onde | O que faz |
 |---|---|---|
-| Hero "Corpo Dissecado" | `src/components/Hero.tsx` + `src/lib/body.ts` | Corpo em linhas de varredura que gira e se abre em camadas no scroll, com rótulos de antropometria ISAK. Canvas 2D procedural: sem assets, leve no navegador do Instagram. |
-| Dor | `Dor.tsx` | Palavras acendem conforme a rolagem. |
-| Método | `Metodo.tsx` | 4 fichas que entram em perspectiva e se empilham. |
-| ISAK | `Isak.tsx` | Números animados + barra de composição corporal + corpo com pontos de medida. |
-| Resultados | `Resultados.tsx`, `ReelPhone.tsx`, `Mosaic.tsx` | Celular 3D com os reels de depoimento (interface própria, estilo Reels), filtro por objetivo e transição antes → depois em mosaico de pixels. |
-| Planos, Sobre, FAQ, CTA | `Planos.tsx`, `Sobre.tsx`, `Faq.tsx`, `CtaFinal.tsx` | Trimestral em destaque, preços via config. |
-| Jornada gamificada | `/diagnostico` → `src/components/jornada/` | 6 fases com XP e badges: objetivo → corpo (modelo reage aos sliders) → rotina (mapa do dia) → sabotadores → desbloqueio (lead) → diagnóstico. |
+| Hero com transformação | `src/components/Hero.tsx` + `src/lib/body.ts` | Mulher e homem desenhados em linhas que passam de "antes" (cinza, postura curvada, mais pesados) para "depois" (verdes, eretos). Acontece sozinho ao abrir e a pessoa pode arrastar o controle. |
+| Faixa | `Faixa.tsx` | Letreiro com os diferenciais. |
+| "Você se identifica?" | `Identifica.tsx` | A pessoa toca nas situações que vive; aparece a mensagem de acolhimento e o convite para o teste. |
+| Como funciona | `ComoFunciona.tsx` | 3 passos simples, com foco em facilidade. |
+| O que muda | `Beneficios.tsx` | Benefícios em cards suaves. |
+| Resultados | `Resultados.tsx`, `ReelPhone.tsx`, `Mosaic.tsx` | Celular 3D com os reels de depoimento, filtro por objetivo e antes → depois em mosaico. |
+| Avaliação ISAK | `Medir.tsx` | "A balança não conta a história toda": duas pessoas com o mesmo peso e composições diferentes. |
+| Convite ao teste | `QuizTeaser.tsx` | Abre o quiz em nova aba. |
+| Planos, Sobre, FAQ, CTA final | `Planos.tsx`, `Sobre.tsx`, `Faq.tsx`, `CtaFinal.tsx` | Trimestral em destaque, CTAs para o WhatsApp. |
+| Quiz gamificado | `/diagnostico` → `src/components/jornada/` | 6 fases com XP: objetivo → corpo (o modelo muda com sexo, peso e altura) → rotina (mapa do dia) → sabotadores → desbloqueio (lead) → diagnóstico. |
 | Diagnóstico com IA | `src/app/api/diagnostico/route.ts` | Claude personaliza os insights na voz do João, com regras de ética rígidas. Sem `ANTHROPIC_API_KEY`, usa o diagnóstico por regras (`src/lib/diagnostico.ts`). |
-| Leads | Supabase (`supabase/leads.sql`) | Salva respostas, perfil, score (quente/morno/frio) e UTMs. Sem Supabase, o lead segue só pelo WhatsApp. |
-| WhatsApp | botão final da jornada | Mensagem pronta com nome, objetivo, perfil, rotina e sabotadores — o João já começa a conversa sabendo tudo. |
-| Card para stories | `src/lib/shareCard.ts` | Gera PNG 1080×1920 com o perfil da pessoa marcando @nutrijoaovitorr. |
-| Rastreamento | `src/lib/track.ts` | Meta Pixel + GA4, um evento por fase (`journey_step_N`, `lead_submitted`, `whatsapp_click`, `share_card`…). |
+| Leads | Supabase (`supabase/leads.sql`) | Salva respostas, perfil, score e UTMs. Sem Supabase, o lead segue só pelo WhatsApp. |
+| Card para stories | `src/lib/shareCard.ts` | PNG 1080×1920 com o perfil da pessoa marcando @nutrijoaovitorr. |
+| Rastreamento | `src/lib/track.ts` | Meta Pixel + GA4 (`quiz_open`, `journey_step_N`, `lead_submitted`, `whatsapp_click`, `hero_slider`…). |
 
 ## Textos e configurações
 
@@ -55,4 +59,6 @@ Todo texto editável está em `content/`:
 
 ## Direção de arte
 
-"Laboratório editorial": Archivo expandida (display) + JetBrains Mono (dados), grafite `#0D0E0C`, osso `#ECE9E1`, um único destaque laranja-sinal `#FF5A1F`, grade técnica, granulação, rótulos de ficha técnica. Tokens em `tailwind.config.ts` e `src/app/globals.css`.
+Leve e acolhedora, para não assustar quem está começando: fundo off-white `#F8F7F2`, verde `#2E9C5A` (escuro `#114E2F`, menta `#E2F1E5`), um toque de amarelo `#F4C152`. Títulos em Fraunces (serifada suave, com itálico nos destaques) e texto em DM Sans. Cantos arredondados, formas orgânicas e folhas. Tokens em `tailwind.config.ts` e `src/app/globals.css`.
+
+> Ajuste os tons de verde para os exatos da marca do João em `tailwind.config.ts`.

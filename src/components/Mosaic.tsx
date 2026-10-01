@@ -27,7 +27,6 @@ export default function Mosaic({ antes, depois, className }: { antes: string; de
     let visible = false;
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
     io.observe(canvas);
-    // alterna sozinho enquanto visível
     const auto = setInterval(() => visible && setShowAfter((v) => !v), 3600);
 
     const draw = () => {
@@ -42,14 +41,13 @@ export default function Mosaic({ antes, depois, className }: { antes: string; de
       const W = canvas.width;
       const H = canvas.height;
       const img = st.t < 0.5 ? imgs[0] : imgs[1];
-      const k = 1 - Math.abs(st.t - 0.5) * 2; // 0 nas pontas, 1 no meio
-      const block = Math.max(1, Math.round(1 + k * k * 46 * dpr));
+      const k = 1 - Math.abs(st.t - 0.5) * 2;
+      const block = Math.max(1, Math.round(1 + k * k * 40 * dpr));
       if (img.complete && img.naturalWidth) {
         const sw = Math.max(1, Math.round(W / block));
         const sh = Math.max(1, Math.round(H / block));
         small.width = sw;
         small.height = sh;
-        // cobre o canvas mantendo proporção
         const ir = img.naturalWidth / img.naturalHeight;
         const cr = W / H;
         let dw = sw, dh = sh, dx = 0, dy = 0;
@@ -58,7 +56,7 @@ export default function Mosaic({ antes, depois, className }: { antes: string; de
         ctx.imageSmoothingEnabled = block <= 1;
         ctx.drawImage(small, 0, 0, sw, sh, 0, 0, W, H);
         if (k > 0.05) {
-          ctx.fillStyle = `rgba(255,90,31,${k * 0.18})`;
+          ctx.fillStyle = `rgba(46,156,90,${k * 0.2})`;
           ctx.fillRect(0, 0, W, H);
         }
       }
@@ -73,16 +71,14 @@ export default function Mosaic({ antes, depois, className }: { antes: string; de
   }, [antes, depois]);
 
   return (
-    <div className={`relative ${className ?? ""}`}>
+    <div className={`relative overflow-hidden rounded-[20px] ${className ?? ""}`}>
       <canvas ref={ref} className="h-full w-full" aria-label="Comparativo antes e depois" role="img" />
-      <div className="absolute inset-x-0 bottom-0 flex">
+      <div className="absolute inset-x-2 bottom-2 flex rounded-full bg-white/90 p-1 backdrop-blur">
         {(["Antes", "Depois"] as const).map((l, i) => (
           <button
             key={l}
             onClick={() => setShowAfter(i === 1)}
-            className={`flex-1 py-3 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors ${
-              showAfter === (i === 1) ? "bg-signal text-ink" : "bg-ink/70 text-bone backdrop-blur"
-            }`}
+            className={`flex-1 rounded-full py-2 text-[13px] font-semibold transition-colors ${showAfter === (i === 1) ? "bg-leaf text-white" : "text-ink-2"}`}
           >
             {l}
           </button>

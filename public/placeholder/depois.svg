@@ -1,12 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
-  <rect width="600" height="800" fill="#2a2c26"/>
-  <g stroke="#3a3c35" stroke-width="1">
-    <path d="M0 200H600M0 400H600M0 600H600M150 0V800M300 0V800M450 0V800"/>
-  </g>
-  <g fill="#b7b2a4">
+  <rect width="600" height="800" fill="#E2F1E5"/>
+  <g fill="#2E9C5A">
     <ellipse cx="300" cy="150" rx="50" ry="62"/>
-    <path d="M196 246c34-22 174-22 208 0l10 120-36 130c-6 40-24 66-60 70H282c-36-4-54-30-60-70l-36-130z"/>
-    <path d="M232 560h60l-6 220h-46zM308 560h60l-8 220h-46z"/>
+    <path d="M200 246c34-22 166-22 200 0l10 120-36 130c-6 40-24 66-60 70H286c-36-4-54-30-60-70l-36-130z"/>
+    <path d="M234 560h58l-6 220h-44zM308 560h58l-8 220h-44z"/>
   </g>
-  <text x="24" y="40" fill="#FF5A1F" font-family="monospace" font-size="18" letter-spacing="3">FOTO DEPOIS · PLACEHOLDER</text>
+  <text x="300" y="60" text-anchor="middle" fill="#114E2F" font-family="sans-serif" font-size="20" font-weight="600">FOTO DEPOIS · PLACEHOLDER</text>
 </svg>

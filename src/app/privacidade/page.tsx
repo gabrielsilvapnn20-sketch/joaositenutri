@@ -8,10 +8,10 @@ export const metadata: Metadata = { title: "Política de Privacidade — João V
 export default function Privacidade() {
   return (
     <main className="gutter mx-auto max-w-3xl py-24">
-      <Link href="/" className="label hover:!text-bone">← Voltar</Link>
-      <h1 className="wide mt-8 text-5xl font-bold uppercase tracking-tighter">Política de Privacidade</h1>
-      <p className="label mt-3">Atualizada em {privacidade.atualizado}</p>
-      <div className="mt-10 space-y-6 leading-relaxed text-bone/80 [&_h2]:mt-10 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-bone">
+      <Link href="/" className="text-sm font-medium text-leaf hover:underline">← Voltar</Link>
+      <h1 className="serif mt-8 text-5xl font-medium">Política de Privacidade</h1>
+      <p className="mt-3 text-sm text-mute">Atualizada em {privacidade.atualizado}</p>
+      <div className="mt-10 space-y-6 leading-relaxed text-ink-2 [&_h2]:mt-10 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-ink">
         <p>
           Esta política explica como {contato.nome}, {contato.titulo} ({contato.crn}), trata os dados coletados neste site, de acordo com a Lei
           Geral de Proteção de Dados (Lei 13.709/2018).

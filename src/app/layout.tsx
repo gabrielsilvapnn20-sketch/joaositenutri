@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, JetBrains_Mono } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
 import Providers from "@/components/Providers";
 import Analytics from "@/components/Analytics";
 import { contato } from "@content/site";
 import "./globals.css";
 
-const display = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--font-display", display: "swap" });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+const serif = Fraunces({ subsets: ["latin"], axes: ["SOFT", "WONK", "opsz"], style: ["normal", "italic"], variable: "--font-serif", display: "swap" });
+const sans = DM_Sans({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 
 export const metadata: Metadata = {
   title: "João Vitor — Nutricionista Esportivo | Goiânia, Pontalina e Online",
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     "nutricionista hipertrofia",
   ],
   openGraph: {
-    title: "Seu corpo tem dados. Eu leio cada um deles.",
+    title: "Comer bem pode ser leve — João Vitor, Nutricionista",
     description: "Faça seu diagnóstico gratuito e descubra o que trava seu resultado na academia.",
     locale: "pt_BR",
     type: "website",
   },
 };
 
-export const viewport: Viewport = { themeColor: "#0D0E0C", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#F8F7F2", width: "device-width", initialScale: 1 };
 
 const schema = {
   "@context": "https://schema.org",
@@ -42,8 +42,8 @@ const schema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${display.variable} ${mono.variable}`}>
-      <body className="grain bg-ink text-bone antialiased">
+    <html lang="pt-BR" className={`${serif.variable} ${sans.variable}`}>
+      <body className="bg-paper text-ink antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
         <Providers>{children}</Providers>
         <Analytics />

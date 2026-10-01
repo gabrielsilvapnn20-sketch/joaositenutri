@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { planos, type Plano } from "@content/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { track } from "@/lib/track";
@@ -9,68 +8,48 @@ const preco = (p: Plano) =>
   p.preco === null ? "R$ —" : p.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 
 export default function Planos() {
-  // trimestral no centro, em destaque
-  const ordem = [planos[0], planos[1], planos[2]];
   return (
-    <section id="planos" className="border-t border-line py-24 sm:py-32">
+    <section id="planos" className="py-20 sm:py-28">
       <div className="gutter">
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-          <div>
-            <p className="label" data-reveal>09 / PLANOS</p>
-            <h2 className="wide mt-4 text-[clamp(2.2rem,6vw,5.4rem)] font-bold uppercase leading-[0.9] tracking-tighter" data-reveal>
-              Escolha<br />seu ritmo.
-            </h2>
-          </div>
-          <p className="max-w-sm text-bone/70" data-reveal>
-            Não sabe qual é o seu? O diagnóstico indica o plano ideal para o seu objetivo e rotina.
-          </p>
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="label" data-reveal>Planos</p>
+          <h2 className="h-section mt-3" data-reveal>Escolha como quer começar.</h2>
+          <p className="mt-4 text-lg text-ink-2" data-reveal>Online de qualquer lugar ou presencial em Goiás. Na dúvida, me chama que eu te ajudo a escolher.</p>
         </div>
 
-        <div className="mt-14 grid gap-px bg-line lg:grid-cols-3">
-          {ordem.map((p) => (
+        <div className="mx-auto mt-14 grid max-w-6xl items-stretch gap-5 lg:grid-cols-3">
+          {planos.map((p) => (
             <article
               key={p.id}
-              className={`relative flex flex-col p-6 sm:p-8 ${p.destaque ? "bg-bone text-ink lg:-my-6 lg:py-14" : "bg-ink"}`}
+              className={`relative flex flex-col rounded-[28px] p-7 sm:p-8 ${p.destaque ? "bg-leaf-deep text-white shadow-soft lg:-my-4 lg:py-12" : "border border-line bg-white"}`}
               data-reveal
             >
               {p.destaque && (
-                <span className="absolute right-0 top-0 bg-signal px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-ink">
-                  Mais escolhido
-                </span>
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-sun px-4 py-1.5 text-[12px] font-bold text-ink">Mais escolhido</span>
               )}
-              <p className={`label ${p.destaque ? "!text-ink/60" : ""}`}>{p.formato}</p>
-              <h3 className="wide mt-2 text-2xl font-bold uppercase tracking-tight">{p.nome}</h3>
-              <p className="mt-8 font-mono text-5xl tracking-tight">
+              <p className={`text-[13px] font-semibold uppercase tracking-wider ${p.destaque ? "text-leaf-soft" : "text-leaf"}`}>{p.formato}</p>
+              <h3 className="serif mt-2 text-3xl font-medium">{p.nome}</h3>
+              <p className="mt-6 text-4xl font-semibold tracking-tight">
                 {preco(p)}
-                <span className={`ml-1 text-sm ${p.destaque ? "text-ink/60" : "text-mute"}`}>{p.periodo}</span>
+                <span className={`ml-1 text-sm font-normal ${p.destaque ? "text-white/60" : "text-mute"}`}>{p.periodo}</span>
               </p>
-              <ul className="mt-8 flex-1 space-y-3">
+              <ul className="mt-7 flex-1 space-y-3">
                 {p.itens.map((i) => (
-                  <li key={i} className="flex gap-3 text-[15px]">
-                    <span className="text-signal">+</span> {i}
+                  <li key={i} className="flex items-start gap-3 text-[15px]">
+                    <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[11px] ${p.destaque ? "bg-leaf text-white" : "bg-mint text-leaf-deep"}`}>✓</span>
+                    {i}
                   </li>
                 ))}
               </ul>
-              <div className="mt-10 flex flex-col gap-2">
-                <Link
-                  href={`/diagnostico?plano=${p.id}`}
-                  onClick={() => track("cta_click", { local: "planos", plano: p.id })}
-                  className={p.destaque ? "btn-signal justify-center" : "btn-ghost justify-center"}
-                >
-                  Fazer diagnóstico →
-                </Link>
-                <a
-                  href={whatsappUrl(`Oi João! Vi no site o plano ${p.nome} (${p.formato}) e quero saber mais.`)}
-                  target="_blank"
-                  rel="noopener"
-                  onClick={() => track("whatsapp_click", { local: "planos", plano: p.id })}
-                  className={`py-2 text-center font-mono text-[11px] uppercase tracking-[0.12em] underline-offset-4 hover:underline ${
-                    p.destaque ? "text-ink/70" : "text-mute"
-                  }`}
-                >
-                  ou falar no WhatsApp
-                </a>
-              </div>
+              <a
+                href={whatsappUrl(`Oi João! Tenho interesse no plano ${p.nome} (${p.formato}).`)}
+                target="_blank"
+                rel="noopener"
+                onClick={() => track("whatsapp_click", { local: "planos", plano: p.id })}
+                className={`mt-8 ${p.destaque ? "btn-leaf !bg-white !text-leaf-deep hover:!bg-mint" : "btn-soft"}`}
+              >
+                Quero esse plano
+              </a>
             </article>
           ))}
         </div>

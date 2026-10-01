@@ -6,12 +6,12 @@ import Mosaic from "./Mosaic";
 import { objetivosLabel, resultados, type Objetivo } from "@content/resultados";
 import { track } from "@/lib/track";
 
-const filtros: (Objetivo | "todos")[] = ["todos", "hipertrofia", "emagrecimento", "rotina", "performance"];
+const filtros: (Objetivo | "todos")[] = ["todos", "emagrecimento", "hipertrofia", "rotina", "performance"];
 
 export default function Resultados() {
   const [filtro, setFiltro] = useState<Objetivo | "todos">("todos");
 
-  // quem já fez o diagnóstico vê primeiro casos do mesmo objetivo
+  // quem já fez o teste vê primeiro casos do mesmo objetivo
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("jv_jornada") || "{}");
@@ -28,14 +28,14 @@ export default function Resultados() {
   const comparativo = resultados.find((r) => r.antes && r.depois);
 
   return (
-    <section id="resultados" className="relative overflow-hidden border-t border-line py-24 sm:py-32">
+    <section id="resultados" className="relative overflow-hidden bg-white py-20 sm:py-28">
       <div className="gutter grid grid-cols-1 gap-14 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-20">
         <div className="min-w-0">
-          <p className="label" data-reveal>08 / RESULTADOS REAIS</p>
-          <h2 className="wide mt-4 text-[clamp(2.2rem,6vw,5.4rem)] font-bold uppercase leading-[0.9] tracking-tighter" data-reveal>
-            Quem seguiu<br />o plano <span className="text-signal">conta.</span>
+          <p className="label" data-reveal>Resultados reais</p>
+          <h2 className="h-section mt-3" data-reveal>
+            Quem começou, <em className="italic text-leaf">não se arrependeu.</em>
           </h2>
-          <p className="mt-6 max-w-md text-lg text-bone/75" data-reveal>
+          <p className="mt-4 max-w-md text-lg text-ink-2" data-reveal>
             Depoimentos dos pacientes, direto do Instagram. Escolha o objetivo parecido com o seu.
           </p>
           <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Filtrar por objetivo">
@@ -48,8 +48,8 @@ export default function Resultados() {
                   setFiltro(f);
                   track("filtro_resultados", { objetivo: f });
                 }}
-                className={`border px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors ${
-                  filtro === f ? "border-signal bg-signal text-ink" : "border-line text-bone/80 hover:border-bone"
+                className={`rounded-full border px-4 py-2.5 text-[14px] font-medium transition-colors ${
+                  filtro === f ? "border-leaf bg-leaf text-white" : "border-line bg-paper text-ink-2 hover:border-leaf/50"
                 }`}
               >
                 {f === "todos" ? "Todos" : objetivosLabel[f]}
@@ -58,13 +58,13 @@ export default function Resultados() {
           </div>
 
           {comparativo?.antes && comparativo.depois && (
-            <div className="mt-12 grid max-w-xl grid-cols-2 gap-3 border border-line p-3 sm:gap-4">
+            <div className="mt-10 grid max-w-xl grid-cols-2 gap-4 rounded-[28px] bg-paper p-3">
               <Mosaic antes={comparativo.antes} depois={comparativo.depois} className="aspect-[3/4]" />
-              <div className="flex min-w-0 flex-col justify-between gap-3 sm:p-2">
-                <p className="label">COMPARATIVO / {comparativo.paciente}</p>
-                <p className="wide break-words text-xl font-bold uppercase leading-none tracking-tight sm:text-3xl">{comparativo.destaque}</p>
-                <p className="text-[13px] leading-snug text-bone/70 sm:text-sm">{comparativo.legenda}</p>
-                <p className="font-mono text-[10px] text-mute">Imagens publicadas com autorização do paciente.</p>
+              <div className="flex min-w-0 flex-col justify-center gap-3 pr-2">
+                <p className="text-[13px] font-medium text-mute">{comparativo.paciente} · {objetivosLabel[comparativo.objetivo]}</p>
+                <p className="serif text-2xl leading-tight text-leaf-deep sm:text-3xl">{comparativo.destaque}</p>
+                <p className="text-[14px] leading-snug text-ink-2">{comparativo.legenda}</p>
+                <p className="text-[11px] text-mute">Imagens publicadas com autorização do paciente.</p>
               </div>
             </div>
           )}

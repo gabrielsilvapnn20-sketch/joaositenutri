@@ -1,25 +1,33 @@
 "use client";
 
 import Link from "next/link";
+import Leaf from "./Leaf";
+import { whatsappUrl } from "@/lib/whatsapp";
 import { track } from "@/lib/track";
 
 export default function CtaFinal() {
   return (
-    <section data-header="ink" className="relative overflow-hidden bg-signal py-24 text-ink sm:py-36">
-      <div className="gutter">
-        <p className="label !text-ink/70">12 / PRÓXIMO PASSO</p>
-        <h2 className="wide mt-6 text-[clamp(2.6rem,10vw,9.5rem)] font-bold uppercase leading-[0.86] tracking-tightest">
-          Seu diagnóstico<br />leva 2 minutos.
+    <section className="gutter pb-20">
+      <div className="relative overflow-hidden rounded-[36px] bg-leaf px-6 py-16 text-center text-white sm:px-12 sm:py-24">
+        <Leaf className="absolute -left-6 top-6 h-24 w-24 -rotate-12 text-white/15" />
+        <Leaf className="absolute -right-4 bottom-4 h-32 w-32 rotate-45 text-white/10" />
+        <h2 className="serif mx-auto max-w-3xl text-[clamp(2.3rem,6vw,4.8rem)] font-medium leading-[1.02]">
+          O melhor dia pra começar é <em className="italic">hoje</em>. O segundo melhor é segunda.
         </h2>
-        <div className="mt-12 flex flex-col gap-6 sm:flex-row sm:items-center">
-          <Link
-            href="/diagnostico"
-            onClick={() => track("cta_click", { local: "final" })}
-            className="inline-flex items-center gap-3 bg-ink px-7 py-5 font-mono text-[12px] uppercase tracking-[0.14em] text-bone transition-transform hover:scale-[1.02]"
+        <p className="mx-auto mt-5 max-w-lg text-lg text-white/85">Manda um oi. Sem compromisso, sem julgamento. A gente vê junto o melhor caminho pra você.</p>
+        <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+          <a
+            href={whatsappUrl("Oi João! Vi seu site e quero começar.")}
+            target="_blank"
+            rel="noopener"
+            onClick={() => track("whatsapp_click", { local: "final" })}
+            className="btn-leaf !bg-white !text-leaf-deep hover:!bg-mint"
           >
-            Começar agora →
+            Chamar no WhatsApp →
+          </a>
+          <Link href="/diagnostico" target="_blank" onClick={() => track("quiz_open", { local: "final" })} className="inline-flex items-center justify-center rounded-full border border-white/40 px-6 py-4 font-semibold hover:bg-white/10">
+            Fazer o teste de 2 min ↗
           </Link>
-          <p className="max-w-xs text-sm text-ink/75">Gratuito. Você recebe seu perfil e o que está travando seu resultado.</p>
         </div>
       </div>
     </section>

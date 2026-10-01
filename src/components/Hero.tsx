@@ -1,147 +1,160 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useRef } from "react";
-import BodyCanvas from "./BodyCanvas";
-import { hero } from "@content/site";
-import { ease, range, smooth, stickyProgress } from "@/lib/scroll";
-import type { BodyState } from "@/lib/body";
+import { useCallback, useEffect, useRef, useState } from "react";
+import BodyCanvas, { type Figure } from "./BodyCanvas";
+import Leaf from "./Leaf";
+import { contato, hero } from "@content/site";
+import { whatsappUrl } from "@/lib/whatsapp";
 import { track } from "@/lib/track";
 
+const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+
 export default function Hero() {
-  const section = useRef<HTMLElement>(null);
-  const title = useRef<HTMLDivElement>(null);
-  const chapters = useRef<(HTMLDivElement | null)[]>([]);
-  const cta = useRef<HTMLDivElement>(null);
-  const hud = useRef<HTMLSpanElement>(null);
-  const bar = useRef<HTMLDivElement>(null);
-  const smoothP = useRef(0);
+  const [k, setK] = useState(0); // 0 = antes, 1 = depois
+  const kRef = useRef(0);
+  const shown = useRef(0);
+  const tocou = useRef(false);
 
-  const getState = useCallback((t: number): BodyState => {
-    const target = stickyProgress(section.current);
-    smoothP.current += (target - smoothP.current) * 0.12;
-    const p = smoothP.current;
-
-    // DOM do overlay (sem re-render)
-    if (title.current) {
-      const out = ease(range(p, 0.04, 0.2));
-      title.current.style.opacity = String(1 - out);
-      title.current.style.transform = `translate3d(0, ${-out * 80}px, 0)`;
+  // a transformação acontece sozinha na primeira visita; depois a pessoa arrasta
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      kRef.current = 1;
+      setK(1);
+      return;
     }
-    const windows: [number, number][] = [
-      [0.18, 0.38],
-      [0.38, 0.6],
-      [0.6, 0.8],
-    ];
-    chapters.current.forEach((el, i) => {
-      if (!el) return;
-      const [a, b] = windows[i];
-      const vin = range(p, a, a + 0.06);
-      const vout = range(p, b - 0.04, b);
-      const o = vin * (1 - vout);
-      el.style.opacity = String(o);
-      el.style.transform = `translate3d(0, ${(1 - vin) * 40 - vout * 40}px, 0)`;
-      el.style.pointerEvents = o > 0.5 ? "auto" : "none";
-    });
-    if (cta.current) {
-      const c = ease(range(p, 0.8, 0.9));
-      cta.current.style.opacity = String(c);
-      cta.current.style.transform = `translate3d(0, ${(1 - c) * 50}px, 0)`;
-      cta.current.style.pointerEvents = c > 0.5 ? "auto" : "none";
-    }
-    const explode = smooth(range(p, 0.38, 0.55)) * (1 - 0.65 * smooth(range(p, 0.62, 0.8)));
-    const rotation = 0.35 + t * 0.12 + p * Math.PI * 2.2;
-    if (hud.current) hud.current.textContent = `ROT ${String(Math.round(((rotation * 180) / Math.PI) % 360)).padStart(3, "0")}° · EXP ${explode.toFixed(2)}`;
-    if (bar.current) bar.current.style.transform = `scaleY(${p})`;
-
-    return {
-      rotation,
-      explode,
-      layers: smooth(range(p, 0.42, 0.58)),
-      labels: range(p, 0.44, 0.62) * (1 - 0.3 * range(p, 0.85, 1)),
-      scan: p < 0.36 ? (t * 0.22 + p * 2) % 1 : -1,
-      girth: 1,
-      highlight: smooth(range(p, 0.62, 0.75)),
+    let raf = 0;
+    const start = performance.now() + 700;
+    const loop = (now: number) => {
+      if (tocou.current) return;
+      const p = Math.min(1, Math.max(0, (now - start) / 2600));
+      kRef.current = ease(p);
+      setK(Math.round(kRef.current * 100) / 100);
+      if (p < 1) raf = requestAnimationFrame(loop);
     };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
-  const offsetX = useCallback(() => (window.innerWidth >= 900 ? 0.17 : 0), []);
-  const scale = useCallback(() => (window.innerWidth >= 900 ? 1 : window.innerWidth < 420 ? 0.82 : 0.9), []);
+  const getState = useCallback((t: number): Figure[] => {
+    shown.current += (kRef.current - shown.current) * 0.14;
+    const v = shown.current;
+    const breathe = Math.sin(t * 1.6) * 0.008;
+    const sway = Math.sin(t * 0.45) * 0.22;
+    const base = { slouch: 1 - v, tone: v };
+    return [
+      { offsetX: -0.17, state: { ...base, sex: "f", rotation: 0.55 + sway, girth: 1.33 - 0.36 * v + breathe } },
+      { offsetX: 0.17, state: { ...base, sex: "m", rotation: -0.5 - sway, girth: 1.3 - 0.33 * v + breathe } },
+    ];
+  }, []);
+
+  const onSlide = (v: number) => {
+    if (!tocou.current) track("hero_slider");
+    tocou.current = true;
+    kRef.current = v;
+    setK(v);
+  };
 
   return (
-    <section ref={section} className="relative h-[460vh]" aria-label="Apresentação">
-      <div className="sticky top-0 h-[100svh] overflow-hidden">
-        {/* grade técnica */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.5]"
-          style={{
-            backgroundImage:
-              "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
-            backgroundSize: "calc(100% / 12) 25vh",
-            maskImage: "radial-gradient(ellipse at 60% 50%, black 30%, transparent 75%)",
-          }}
-        />
-        <BodyCanvas getState={getState} offsetX={offsetX} scale={scale} className="absolute inset-0 h-full w-full" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[55svh] bg-gradient-to-t from-ink via-ink/75 to-transparent lg:hidden" />
+    <section className="relative overflow-hidden pb-10 pt-20 sm:pt-28 lg:pb-20">
+      <Leaf className="pointer-events-none absolute -left-6 top-40 h-16 w-16 rotate-[-20deg] text-leaf-soft/50 floaty" />
+      <Leaf className="pointer-events-none absolute right-[8%] top-24 h-10 w-10 rotate-[40deg] text-leaf/30 floaty" style={{ animationDelay: "1.5s" }} />
 
-        {/* HUD */}
-        <div className="gutter pointer-events-none absolute inset-x-0 top-16 flex justify-between">
-          <span className="label">{hero.objeto}</span>
-          <span ref={hud} className="label hidden tabular-nums sm:inline">ROT 000° · EXP 0.00</span>
-        </div>
-        <div className="pointer-events-none absolute bottom-8 right-4 top-28 w-px bg-line sm:right-8 lg:right-12">
-          <div ref={bar} className="h-full w-px origin-top bg-signal" style={{ transform: "scaleY(0)" }} />
-        </div>
-
-        {/* Título */}
-        <div ref={title} className="gutter absolute inset-x-0 bottom-[9svh] will-change-transform lg:bottom-auto lg:top-[24svh]">
-          <h1 className="wide text-[clamp(3.1rem,12.5vw,10.5rem)] font-bold uppercase leading-[0.86] tracking-tightest">
-            {hero.titulo.map((l) => (
-              <span key={l} className="block">{l}</span>
-            ))}
+      <div className="gutter grid items-center gap-x-10 gap-y-6 lg:grid-cols-[1fr_1.05fr] lg:grid-rows-[auto_auto]">
+        <div className="relative z-10 order-1 lg:order-none lg:self-end">
+          <p className="inline-flex items-center gap-2 rounded-full bg-mint px-4 py-2 text-[13px] font-medium text-leaf-deep">
+            <span className="h-2 w-2 shrink-0 rounded-full bg-leaf" /> {hero.selo}
+          </p>
+          <h1 className="serif mt-5 text-[clamp(2.7rem,7.4vw,6.2rem)] font-medium leading-[0.98] text-ink">
+            {hero.titulo[0]}
+            <br />
+            {hero.titulo[1]} <em className="font-normal italic text-leaf">{hero.destaque}</em>
           </h1>
-          <p className="mt-5 max-w-md text-xl text-bone/90 sm:text-2xl">
-            <span className="text-signal">→</span> {hero.subtitulo}
-          </p>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-mute">{hero.apoio}</p>
-          <p className="label mt-8 flex items-center gap-3">
-            <span className="inline-block h-6 w-px animate-pulse bg-signal" /> Role para dissecar
-          </p>
         </div>
 
-        {/* Capítulos */}
-        {hero.capitulos.map((c, i) => (
-          <div
-            key={c.codigo}
-            ref={(el) => {
-              chapters.current[i] = el;
-            }}
-            className="gutter absolute bottom-[8svh] left-0 max-w-[34rem] opacity-0 will-change-transform lg:bottom-auto lg:top-[34svh]"
-          >
-            <p className="label !text-signal">{c.codigo}</p>
-            <h2 className="wide mt-3 text-[clamp(2rem,6vw,4.4rem)] font-bold uppercase leading-[0.92] tracking-tighter">
-              {c.titulo}
-            </h2>
-            <p className="mt-4 max-w-sm text-base text-bone/75">{c.texto}</p>
+        <div className="relative z-10 order-3 lg:order-none lg:col-start-1 lg:row-start-2 lg:self-start">
+          <p className="max-w-md text-lg leading-relaxed text-ink-2">{hero.apoio}</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a
+              href={whatsappUrl("Oi João! Vi seu site e quero começar meu acompanhamento.")}
+              target="_blank"
+              rel="noopener"
+              onClick={() => track("whatsapp_click", { local: "hero" })}
+              className="btn-leaf"
+            >
+              {hero.ctaWhats} <span aria-hidden>→</span>
+            </a>
+            <Link href="/diagnostico" target="_blank" onClick={() => track("quiz_open", { local: "hero" })} className="btn-soft">
+              {hero.ctaQuiz} <span aria-hidden>↗</span>
+            </Link>
           </div>
-        ))}
+          <div className="mt-8 flex items-center gap-3">
+            <div className="flex -space-x-2">
+              {["#CDE8D4", "#F2EADA", "#7CC596", "#E2F1E5"].map((c, i) => (
+                <span key={i} className="h-9 w-9 rounded-full border-2 border-paper" style={{ background: c }} />
+              ))}
+            </div>
+            <p className="text-sm text-mute">
+              <strong className="text-ink">{contato.seguidores} pessoas</strong> acompanham o João no Instagram
+            </p>
+          </div>
+        </div>
 
-        {/* CTA */}
-        <div
-          ref={cta}
-          className="gutter absolute bottom-[8svh] left-0 max-w-[38rem] opacity-0 will-change-transform lg:bottom-auto lg:top-[30svh]"
-        >
-          <p className="label !text-signal">04 / DIAGNÓSTICO</p>
-          <h2 className="wide mt-3 text-[clamp(2.2rem,6.5vw,5rem)] font-bold uppercase leading-[0.9] tracking-tighter">
-            Agora é a vez dos <span className="text-signal">seus</span> dados.
-          </h2>
-          <p className="mt-4 max-w-sm text-bone/75">
-            6 fases, 2 minutos. No final você recebe seu perfil e o que trava seu resultado.
-          </p>
-          <Link href="/diagnostico" className="btn-signal mt-7" onClick={() => track("cta_click", { local: "hero" })}>
-            {hero.cta} <span aria-hidden>→</span>
-          </Link>
+        {/* palco da transformação */}
+        <div className="relative order-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <div className="relative mx-auto aspect-[1/0.9] w-full max-w-[620px] sm:aspect-[1/1.05]">
+            <div className="absolute inset-[6%] rounded-blob bg-mint transition-colors duration-700" style={{ background: k > 0.5 ? "#E2F1E5" : "#EEEDE7" }} />
+            <BodyCanvas getState={getState} scale={0.98} className="absolute inset-0 h-full w-full" ariaLabel="Mulher e homem se transformando de cansados para saudáveis" />
+
+            {hero.antes.map((c, i) => (
+              <span
+                key={c}
+                className="absolute whitespace-nowrap rounded-full bg-white px-3.5 py-2 text-[13px] font-medium text-mute shadow-soft transition-all duration-500"
+                style={{
+                  left: ["2%", "64%", "6%"][i],
+                  top: ["22%", "14%", "70%"][i],
+                  opacity: k < 0.35 ? 1 : 0,
+                  transform: `translateY(${k < 0.35 ? 0 : 10}px)`,
+                }}
+              >
+                <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-[#A0A8A2]" />
+                {c}
+              </span>
+            ))}
+            {hero.depois.map((c, i) => (
+              <span
+                key={c}
+                className="absolute whitespace-nowrap rounded-full bg-white px-3.5 py-2 text-[13px] font-semibold text-leaf-deep shadow-soft transition-all duration-500"
+                style={{
+                  left: ["0%", "66%", "58%"][i],
+                  top: ["30%", "20%", "74%"][i],
+                  opacity: k > 0.65 ? 1 : 0,
+                  transform: `translateY(${k > 0.65 ? 0 : 10}px) scale(${k > 0.65 ? 1 : 0.9})`,
+                  transitionDelay: `${i * 120}ms`,
+                }}
+              >
+                <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-leaf" />
+                {c}
+              </span>
+            ))}
+          </div>
+
+          <div className="mx-auto -mt-2 max-w-[420px] px-2">
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={k}
+              onChange={(e) => onSlide(Number(e.target.value))}
+              aria-label="Arraste para ver a transformação"
+            />
+            <div className="mt-2 flex justify-between text-[13px] font-medium">
+              <span className={k < 0.5 ? "text-ink" : "text-mute"}>Antes</span>
+              <span className="text-mute">arraste ↔</span>
+              <span className={k >= 0.5 ? "text-leaf" : "text-mute"}>Depois</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

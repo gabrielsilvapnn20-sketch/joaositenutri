@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import BodyCanvas, { monoFontFamily } from "@/components/BodyCanvas";
+import BodyCanvas, { cssFont } from "@/components/BodyCanvas";
 import type { BodyState } from "@/lib/body";
 import {
   SABOTADORES,
@@ -33,10 +33,10 @@ const FASES = [
 const XP_POR_FASE = 120;
 
 const OBJETIVOS: { id: Objetivo; codigo: string; titulo: string; texto: string }[] = [
-  { id: "hipertrofia", codigo: "OBJ / A", titulo: "Ganhar massa", texto: "Crescer de verdade, sem ganhar barriga junto." },
-  { id: "emagrecimento", codigo: "OBJ / B", titulo: "Secar", texto: "Perder gordura sem perder o músculo que já tenho." },
-  { id: "rotina", codigo: "OBJ / C", titulo: "Evoluir no treino", texto: "Ter mais energia e resultado com a rotina que eu tenho." },
-  { id: "performance", codigo: "OBJ / D", titulo: "Performance", texto: "Render mais no meu esporte: corrida, luta, futebol…" },
+  { id: "hipertrofia", codigo: "Hipertrofia", titulo: "Ganhar massa", texto: "Crescer de verdade, sem ganhar barriga junto." },
+  { id: "emagrecimento", codigo: "Emagrecimento", titulo: "Secar", texto: "Perder gordura sem perder o músculo que já tenho." },
+  { id: "rotina", codigo: "Rotina", titulo: "Evoluir no treino", texto: "Ter mais energia e resultado com a rotina que eu tenho." },
+  { id: "performance", codigo: "Esporte", titulo: "Performance", texto: "Render mais no meu esporte: corrida, luta, futebol…" },
 ];
 
 const INICIAL: Omit<Respostas, "objetivo" | "local"> & { objetivo?: Objetivo; local?: Respostas["local"] } = {
@@ -77,8 +77,8 @@ function Chip({ on, children, onClick }: { on: boolean; children: React.ReactNod
       type="button"
       aria-pressed={on}
       onClick={onClick}
-      className={`border px-4 py-3 text-left text-[15px] transition-colors ${
-        on ? "border-signal bg-signal text-ink" : "border-line text-bone/85 hover:border-bone"
+      className={`rounded-2xl border px-4 py-3.5 text-left text-[15px] font-medium transition-colors ${
+        on ? "border-leaf bg-leaf text-white shadow-soft" : "border-line bg-white text-ink-2 hover:border-leaf/60"
       }`}
     >
       {children}
@@ -92,7 +92,7 @@ function Slider(props: { label: string; value: number; min: number; max: number;
     <label className="block">
       <span className="flex items-baseline justify-between">
         <span className="label">{label}</span>
-        <span className="font-mono text-2xl tabular-nums">
+        <span className="text-2xl tabular-nums">
           {fmt ? fmt(value) : value}
           <span className="ml-1 text-sm text-mute">{unit}</span>
         </span>
@@ -192,24 +192,24 @@ export default function Jornada() {
   return (
     <div className="min-h-[100svh]">
       {/* barra superior: progresso + XP */}
-      <header className="gutter sticky top-0 z-40 border-b border-line bg-ink/90 py-3 backdrop-blur">
+      <header className="gutter sticky top-0 z-40 border-b border-line bg-paper/90 py-3 backdrop-blur">
         <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="wide text-[13px] font-semibold uppercase">João Vitor</Link>
+          <Link href="/" className="flex items-center gap-2 text-[14px] font-semibold"><span className="serif grid h-8 w-8 place-items-center rounded-full bg-leaf text-[13px] text-white">JV</span> João Vitor</Link>
           <span className="label tabular-nums">
-            FASE {FASES[fase].codigo} / 06 · <span className="text-signal">{xp} XP</span>
+            FASE {FASES[fase].codigo} / 06 · <span className="text-leaf">{xp} XP</span>
           </span>
         </div>
         <div className="mt-3 grid grid-cols-6 gap-1" aria-hidden>
           {FASES.map((f, i) => (
-            <span key={f.codigo} className="h-[3px] overflow-hidden bg-line">
-              <span className={`block h-full bg-signal transition-[width] duration-700 ${i < fase || (i === 5 && diag && fase === 5) ? "w-full" : i === fase ? "w-1/2" : "w-0"}`} />
+            <span key={f.codigo} className="h-[3px] overflow-hidden bg-mint">
+              <span className={`block h-full bg-leaf transition-[width] duration-700 ${i < fase || (i === 5 && diag && fase === 5) ? "w-full" : i === fase ? "w-1/2" : "w-0"}`} />
             </span>
           ))}
         </div>
       </header>
 
       {toast && (
-        <div role="status" className="fixed left-1/2 top-20 z-50 -translate-x-1/2 animate-[toast_1.9s_ease_forwards] bg-signal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink">
+        <div role="status" className="fixed left-1/2 top-20 z-50 -translate-x-1/2 animate-[toast_1.9s_ease_forwards] rounded-full bg-leaf px-5 py-2.5 text-[13px] font-semibold text-white shadow-soft">
           {toast}
         </div>
       )}
@@ -260,23 +260,23 @@ export default function Jornada() {
 function Titulo({ codigo, children, sub }: { codigo: string; children: React.ReactNode; sub?: string }) {
   return (
     <div className="max-w-3xl">
-      <p className="label !text-signal">{codigo}</p>
-      <h1 className="wide mt-3 text-[clamp(2rem,6.5vw,4.6rem)] font-bold uppercase leading-[0.92] tracking-tighter">{children}</h1>
-      {sub && <p className="mt-4 max-w-xl text-bone/70 sm:text-lg">{sub}</p>}
+      <p className="label !text-leaf">{codigo}</p>
+      <h1 className="serif mt-3 text-[clamp(2.1rem,5.6vw,3.9rem)] font-medium leading-[1.03]">{children}</h1>
+      {sub && <p className="mt-4 max-w-xl text-ink/70 sm:text-lg">{sub}</p>}
     </div>
   );
 }
 
 function Nav({ onBack, onNext, nextLabel = "Continuar", disabled }: { onBack?: () => void; onNext?: () => void; nextLabel?: string; disabled?: boolean }) {
   return (
-    <div className="gutter fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-line bg-ink/95 py-3 backdrop-blur">
+    <div className="gutter fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-line bg-paper/95 py-3 backdrop-blur">
       {onBack ? (
-        <button type="button" onClick={onBack} className="label px-2 py-3 hover:!text-bone">← Voltar</button>
+        <button type="button" onClick={onBack} className="label px-2 py-3 hover:!text-ink">← Voltar</button>
       ) : (
         <span />
       )}
       {onNext && (
-        <button type="button" onClick={onNext} disabled={disabled} className="btn-signal disabled:opacity-40">
+        <button type="button" onClick={onNext} disabled={disabled} className="btn-leaf disabled:opacity-40">
           {nextLabel} →
         </button>
       )}
@@ -304,16 +304,16 @@ function FaseObjetivo({ valor, onEscolha }: { valor?: Objetivo; onEscolha: (o: O
               el.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateZ(10px)`;
             }}
             onPointerLeave={(e) => (e.currentTarget.style.transform = "")}
-            className={`group relative flex min-h-[170px] flex-col justify-between border p-5 text-left transition-[transform,background,border-color] duration-300 ease-out sm:min-h-[220px] sm:p-7 ${
-              valor === o.id ? "border-signal bg-signal text-ink" : "border-line bg-ink-2 hover:border-bone/60"
+            className={`group relative flex min-h-[160px] rounded-[24px] flex-col justify-between border p-5 text-left transition-[transform,background,border-color] duration-300 ease-out sm:min-h-[220px] sm:p-7 ${
+              valor === o.id ? "border-leaf bg-leaf text-white" : "border-line bg-white hover:border-ink/60"
             }`}
           >
-            <span className={`label ${valor === o.id ? "!text-ink/70" : ""}`}>{o.codigo}</span>
+            <span className={`label ${valor === o.id ? "!text-white/70" : ""}`}>{o.codigo}</span>
             <span>
-              <span className="wide block text-[clamp(1.7rem,4vw,2.6rem)] font-bold uppercase leading-none tracking-tight">{o.titulo}</span>
-              <span className={`mt-3 block text-[15px] ${valor === o.id ? "text-ink/80" : "text-bone/65"}`}>{o.texto}</span>
+              <span className="serif block text-[clamp(1.7rem,4vw,2.4rem)] font-medium leading-none">{o.titulo}</span>
+              <span className={`mt-3 block text-[15px] ${valor === o.id ? "text-white/80" : "text-ink/65"}`}>{o.texto}</span>
             </span>
-            <span className="absolute right-5 top-5 font-mono text-lg opacity-40 transition-transform group-hover:translate-x-1">→</span>
+            <span className="absolute right-5 top-5 text-lg opacity-40 transition-transform group-hover:translate-x-1">→</span>
           </button>
         ))}
       </div>
@@ -331,7 +331,7 @@ function FaseCorpo({ r, set, onNext, onBack }: { r: Rascunho; set: SetFn; onNext
     const b = imc(rRef.current);
     const alvo = Math.min(1.42, Math.max(0.82, 0.86 + ((b - 18) / 17) * 0.52));
     girthAtual.current += (alvo - girthAtual.current) * 0.1;
-    return { rotation: 0.4 + t * 0.4, explode: 0, layers: 0, labels: 0, scan: (t * 0.25) % 1, girth: girthAtual.current };
+    return { rotation: 0.4 + Math.sin(t * 0.5) * 0.5, girth: girthAtual.current, sex: rRef.current.sexo === "feminino" ? "f" : "m", tone: 1 };
   }, []);
   const valorImc = imc(r);
 
@@ -341,12 +341,12 @@ function FaseCorpo({ r, set, onNext, onBack }: { r: Rascunho; set: SetFn; onNext
         Vamos mapear<br />seu ponto de partida.
       </Titulo>
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-center">
-        <div className="relative aspect-square max-h-[56svh] w-full border border-line bg-ink-2 lg:aspect-[4/5]">
-          <span className="label absolute left-3 top-3">MODELO / {r.sexo === "feminino" ? "F" : "M"}</span>
+        <div className="relative aspect-square max-h-[56svh] w-full overflow-hidden rounded-[28px] bg-mint lg:aspect-[4/5]">
+          <span className="label absolute left-3 top-3">Seu modelo</span>
           <span className="label absolute right-3 top-3 tabular-nums">IMC {valorImc.toFixed(1).replace(".", ",")}</span>
           <BodyCanvas getState={getState} scale={0.9} className="absolute inset-0 h-full w-full" />
-          <p className="absolute inset-x-3 bottom-3 font-mono text-[11px] leading-snug text-mute">
-            O IMC não diferencia músculo de gordura. <span className="text-bone">É por isso que eu meço.</span>
+          <p className="absolute inset-x-3 bottom-3 text-[11px] leading-snug text-mute">
+            O IMC não diferencia músculo de gordura. <span className="text-ink">É por isso que eu meço.</span>
           </p>
         </div>
         <div className="space-y-8">
@@ -384,7 +384,7 @@ function FaseRotina({ r, set, onNext, onBack }: { r: Rascunho; set: SetFn; onNex
             <div className="mt-3 grid grid-cols-6 gap-1.5">
               {[1, 2, 3, 4, 5, 6].map((n) => (
                 <Chip key={n} on={r.refeicoes === n} onClick={() => set("refeicoes", n)}>
-                  <span className="block text-center font-mono">{n}</span>
+                  <span className="block text-center">{n}</span>
                 </Chip>
               ))}
             </div>
@@ -441,16 +441,16 @@ function FaseSabotadores({ r, set, onNext, onBack }: { r: Rascunho; set: SetFn; 
           <Chip key={s.id} on={r.sabotadores.includes(s.id)} onClick={() => toggle(s.id)}>
             <span className="flex items-center justify-between gap-3">
               {s.label}
-              <span className="font-mono text-xs opacity-60">{r.sabotadores.includes(s.id) ? "✕" : "+"}</span>
+              <span className="text-xs opacity-60">{r.sabotadores.includes(s.id) ? "✕" : "+"}</span>
             </span>
           </Chip>
         ))}
       </div>
-      <p className="mt-8 min-h-[3rem] max-w-xl font-mono text-sm text-bone/80" aria-live="polite">
+      <p className="mt-8 min-h-[3rem] max-w-xl text-sm text-ink/80" aria-live="polite">
         {n === 0
           ? "Nenhum marcado ainda."
           : `${n} ${n === 1 ? "sabotador identificado" : "sabotadores identificados"} — `}
-        {n > 0 && <span className="text-signal">todos têm solução com estratégia.</span>}
+        {n > 0 && <span className="text-leaf">todos têm solução com estratégia.</span>}
       </p>
       <Nav onBack={onBack} onNext={onNext} nextLabel={n === 0 ? "Nenhum, continuar" : "Continuar"} />
     </>
@@ -475,24 +475,24 @@ function FaseDesbloqueio(props: {
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2">
         {/* prévia bloqueada */}
-        <div className="relative overflow-hidden border border-line bg-ink-2 p-6" aria-hidden>
+        <div className="relative overflow-hidden rounded-[28px] bg-white p-6 shadow-soft" aria-hidden>
           <p className="label">PERFIL / ???-0?</p>
           <div className="mt-4 select-none blur-[7px]">
-            <p className="wide text-4xl font-bold uppercase leading-none">O Disciplinado Sem Estratégia</p>
-            <p className="mt-4 text-bone/70">Você tem o que a maioria não tem: constância. O que falta é direção para o esforço.</p>
+            <p className="serif text-4xl leading-none">O Disciplinado Sem Estratégia</p>
+            <p className="mt-4 text-ink/70">Você tem o que a maioria não tem: constância. O que falta é direção para o esforço.</p>
             <div className="mt-6 space-y-3">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="border-t border-line pt-3">
                   <p className="font-semibold">Insight personalizado número {i}</p>
-                  <p className="text-sm text-bone/60">Texto explicando o que trava o seu resultado agora.</p>
+                  <p className="text-sm text-ink/60">Texto explicando o que trava o seu resultado agora.</p>
                 </div>
               ))}
             </div>
           </div>
-          <div className="absolute inset-0 grid place-items-center bg-ink/30">
+          <div className="absolute inset-0 grid place-items-center bg-paper/30">
             <div className="text-center">
-              <span className="mx-auto grid h-14 w-14 place-items-center border border-signal font-mono text-signal">⌧</span>
-              <p className="label mt-3 !text-bone">{r.sabotadores.length + 4} variáveis analisadas</p>
+              <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-leaf text-white shadow-soft"><svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg></span>
+              <p className="label mt-3 !text-ink">{r.sabotadores.length + 4} variáveis analisadas</p>
             </div>
           </div>
         </div>
@@ -504,7 +504,7 @@ function FaseDesbloqueio(props: {
               value={lead.nome}
               onChange={(e) => setLead((l) => ({ ...l, nome: e.target.value }))}
               autoComplete="given-name"
-              className="mt-2 w-full border-b border-line bg-transparent py-3 text-2xl outline-none focus:border-signal"
+              className="mt-2 w-full border-b border-line bg-transparent py-3 text-2xl outline-none focus:border-leaf"
               placeholder="Como posso te chamar?"
             />
           </label>
@@ -515,7 +515,7 @@ function FaseDesbloqueio(props: {
               onChange={(e) => setLead((l) => ({ ...l, whatsapp: formatWhats(e.target.value) }))}
               inputMode="tel"
               autoComplete="tel-national"
-              className="mt-2 w-full border-b border-line bg-transparent py-3 font-mono text-2xl outline-none focus:border-signal"
+              className="mt-2 w-full border-b border-line bg-transparent py-3 text-2xl outline-none focus:border-leaf"
               placeholder="(62) 99999-9999"
             />
           </label>
@@ -535,12 +535,12 @@ function FaseDesbloqueio(props: {
               ))}
             </div>
           </div>
-          <label className="flex cursor-pointer items-start gap-3 text-sm text-bone/75">
+          <label className="flex cursor-pointer items-start gap-3 text-sm text-ink/75">
             <input
               type="checkbox"
               checked={lead.consentimento}
               onChange={(e) => setLead((l) => ({ ...l, consentimento: e.target.checked }))}
-              className="mt-1 h-4 w-4 accent-[#FF5A1F]"
+              className="mt-1 h-4 w-4 accent-[#2E9C5A]"
             />
             <span>
               Autorizo o uso das minhas respostas, incluindo dados de saúde, para gerar meu diagnóstico e para o João entrar em
@@ -548,13 +548,13 @@ function FaseDesbloqueio(props: {
               <Link href="/privacidade" className="underline underline-offset-2" target="_blank">política de privacidade</Link>.
             </span>
           </label>
-          {erro && <p className="font-mono text-sm text-signal" role="alert">{erro}</p>}
+          {erro && <p className="text-sm text-leaf" role="alert">{erro}</p>}
         </div>
       </div>
 
-      <div className="gutter fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-line bg-ink/95 py-3 backdrop-blur">
-        <button type="button" onClick={onBack} className="label px-2 py-3 hover:!text-bone">← Voltar</button>
-        <button type="submit" className="btn-signal">Desbloquear diagnóstico →</button>
+      <div className="gutter fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-line bg-paper/95 py-3 backdrop-blur">
+        <button type="button" onClick={onBack} className="label px-2 py-3 hover:!text-ink">← Voltar</button>
+        <button type="submit" className="btn-leaf">Desbloquear diagnóstico →</button>
       </div>
     </form>
   );
@@ -568,7 +568,7 @@ function Analisando() {
     return () => clearInterval(t);
   }, [passos.length]);
   const getState = useCallback(
-    (t: number): BodyState => ({ rotation: t * 0.9, explode: 0.5 + Math.sin(t * 1.4) * 0.3, layers: 1, labels: 0, scan: (t * 0.5) % 1, girth: 1, highlight: 1 }),
+    (t: number): BodyState => ({ rotation: t * 0.9, explode: 0.35 + Math.sin(t * 1.4) * 0.25, labels: 1, scan: (t * 0.5) % 1, girth: 1, tone: 1, sex: "f" }),
     [],
   );
   return (
@@ -577,8 +577,8 @@ function Analisando() {
         <div className="relative mx-auto aspect-square w-full max-w-[360px]">
           <BodyCanvas getState={getState} scale={0.85} className="absolute inset-0 h-full w-full" />
         </div>
-        <p className="label mt-6 !text-signal">ANALISANDO</p>
-        <ul className="mt-4 space-y-2 font-mono text-sm" aria-live="polite">
+        <p className="label mt-6 !text-leaf">ANALISANDO</p>
+        <ul className="mt-4 space-y-2 text-sm" aria-live="polite">
           {passos.map((p, j) => (
             <li key={p} className={`transition-opacity duration-500 ${j <= i ? "opacity-100" : "opacity-20"}`}>
               {j < i ? "✓" : j === i ? "›" : "·"} {p}
@@ -603,8 +603,7 @@ function FaseResultado({ r, lead, d, planoPreferido, onReset }: { r: Respostas; 
   async function compartilhar() {
     setCompartilhando(true);
     try {
-      const display = getComputedStyle(document.body).getPropertyValue("--font-display").trim() || "sans-serif";
-      const blob = await gerarCardStories(d.perfil, lead.nome || "Eu", monoFontFamily(), display);
+      const blob = await gerarCardStories(d.perfil, lead.nome || "Eu", cssFont("--font-sans", "sans-serif"), cssFont("--font-serif", "serif"));
       if (!blob) return;
       const file = new File([blob], "meu-perfil-de-treino.png", { type: "image/png" });
       if (navigator.canShare?.({ files: [file] })) {
@@ -628,41 +627,41 @@ function FaseResultado({ r, lead, d, planoPreferido, onReset }: { r: Respostas; 
     <>
       <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
         <div>
-          <p className="label !text-signal">FASE 06 / DIAGNÓSTICO · {lead.nome ? lead.nome.split(" ")[0].toUpperCase() : "VOCÊ"}</p>
+          <p className="label !text-leaf">FASE 06 / DIAGNÓSTICO · {lead.nome ? lead.nome.split(" ")[0].toUpperCase() : "VOCÊ"}</p>
           <p className="label mt-6">{d.perfil.codigo}</p>
-          <h1 className="wide mt-2 text-[clamp(2.4rem,7vw,5.6rem)] font-bold uppercase leading-[0.88] tracking-tighter">{d.perfil.titulo}</h1>
-          <p className="mt-6 max-w-xl text-lg text-bone/80 sm:text-xl">{d.perfil.descricao}</p>
+          <h1 className="serif mt-2 text-[clamp(2.5rem,6.4vw,5rem)] font-medium leading-[0.98] text-leaf-deep">{d.perfil.titulo}</h1>
+          <p className="mt-6 max-w-xl text-lg text-ink/80 sm:text-xl">{d.perfil.descricao}</p>
 
           <ol className="mt-12 border-t border-line">
             {d.insights.map((ins, i) => (
               <li key={ins.titulo} className="grid grid-cols-[2.5rem_1fr] gap-2 border-b border-line py-6">
-                <span className="font-mono text-sm text-signal">{String(i + 1).padStart(2, "0")}</span>
+                <span className="text-sm text-leaf">{String(i + 1).padStart(2, "0")}</span>
                 <div>
                   <p className="text-lg font-semibold sm:text-xl">{ins.titulo}</p>
-                  <p className="mt-2 text-bone/70">{ins.texto}</p>
+                  <p className="mt-2 text-ink/70">{ins.texto}</p>
                 </div>
               </li>
             ))}
           </ol>
 
-          <figure className="mt-10 border-l-2 border-signal pl-6">
-            <blockquote className="text-lg leading-relaxed text-bone/90 sm:text-xl">“{d.joaoFaria}”</blockquote>
+          <figure className="mt-10 border-l-2 border-leaf pl-6">
+            <blockquote className="text-lg leading-relaxed text-ink/90 sm:text-xl">“{d.joaoFaria}”</blockquote>
             <figcaption className="label mt-4 flex items-center gap-3">
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-signal font-mono text-[10px] font-bold text-ink">JV</span>
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-leaf text-[10px] font-bold text-white">JV</span>
               João Vitor · Nutricionista Esportivo
             </figcaption>
           </figure>
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          {vagas.ativo && <p className="border border-signal px-4 py-3 font-mono text-xs uppercase tracking-wider text-signal">{vagas.texto}</p>}
-          <div className="bg-bone p-6 text-ink sm:p-8">
-            <p className="label !text-ink/60">PLANO INDICADO PARA VOCÊ</p>
-            <p className="wide mt-2 text-3xl font-bold uppercase leading-none tracking-tight">{plano.nome}</p>
-            <p className="mt-1 font-mono text-sm text-ink/70">{plano.formato}</p>
+          {vagas.ativo && <p className="rounded-2xl bg-sand px-4 py-3 text-sm font-medium text-ink">{vagas.texto}</p>}
+          <div className="rounded-[28px] bg-leaf-deep p-6 text-white shadow-soft sm:p-8">
+            <p className="label !text-white/60">PLANO INDICADO PARA VOCÊ</p>
+            <p className="serif mt-2 text-3xl leading-none">{plano.nome}</p>
+            <p className="mt-1 text-sm text-white/70">{plano.formato}</p>
             <ul className="mt-6 space-y-2">
               {plano.itens.map((i) => (
-                <li key={i} className="flex gap-3 text-[15px]"><span className="text-signal">+</span>{i}</li>
+                <li key={i} className="flex gap-3 text-[15px]"><span className="text-leaf">+</span>{i}</li>
               ))}
             </ul>
             <p className="mt-6 font-semibold">{d.fechamento}</p>
@@ -671,28 +670,28 @@ function FaseResultado({ r, lead, d, planoPreferido, onReset }: { r: Respostas; 
               target="_blank"
               rel="noopener"
               onClick={() => track("whatsapp_click", { local: "diagnostico", plano: plano.id, score: d.score })}
-              className="mt-6 flex w-full items-center justify-center gap-3 bg-ink px-6 py-5 font-mono text-[12px] uppercase tracking-[0.14em] text-bone transition-transform hover:scale-[1.01]"
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-[15px] font-semibold text-leaf-deep transition-transform hover:scale-[1.01]"
             >
               Quero começar → WhatsApp
             </a>
-            <p className="mt-3 text-center text-xs text-ink/60">Seu diagnóstico vai junto na mensagem.</p>
+            <p className="mt-3 text-center text-xs text-white/60">Seu diagnóstico vai junto na mensagem.</p>
           </div>
 
           {caso && (
-            <div className="border border-line p-5">
+            <div className="rounded-[24px] bg-white p-5 shadow-soft">
               <p className="label">CASO PARECIDO COM O SEU · {objetivosLabel[caso.objetivo].toUpperCase()}</p>
-              <p className="mt-3 text-bone/85">“{caso.legenda}”</p>
-              <p className="mt-3 font-mono text-sm text-signal">{caso.destaque}</p>
-              <Link href="/#resultados" className="label mt-4 inline-block underline underline-offset-4 hover:!text-bone">Ver depoimentos →</Link>
+              <p className="mt-3 text-ink/85">“{caso.legenda}”</p>
+              <p className="mt-3 text-sm text-leaf">{caso.destaque}</p>
+              <Link href="/#resultados" className="label mt-4 inline-block underline underline-offset-4 hover:!text-ink">Ver depoimentos →</Link>
             </div>
           )}
 
-          <button type="button" onClick={compartilhar} disabled={compartilhando} className="btn-ghost w-full justify-center">
+          <button type="button" onClick={compartilhar} disabled={compartilhando} className="btn-soft w-full justify-center">
             {compartilhando ? "Gerando…" : "Compartilhar meu perfil nos stories"}
           </button>
           <div className="flex justify-between">
-            <Link href="/#planos" className="label hover:!text-bone">Ver todos os planos</Link>
-            <button type="button" onClick={onReset} className="label hover:!text-bone">Refazer</button>
+            <Link href="/#planos" className="label hover:!text-ink">Ver todos os planos</Link>
+            <button type="button" onClick={onReset} className="label hover:!text-ink">Refazer</button>
           </div>
           <p className="pt-2 text-xs leading-relaxed text-mute">
             Este diagnóstico é uma orientação geral baseada nas suas respostas e não substitui a consulta com avaliação individual.

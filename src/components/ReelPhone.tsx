@@ -30,31 +30,31 @@ function Reel({ r, active }: { r: Resultado; active: boolean }) {
   }, [active]);
 
   return (
-    <article className="relative h-full w-full shrink-0 snap-start overflow-hidden bg-ink-3">
+    <article className="relative h-full w-full shrink-0 snap-start overflow-hidden bg-[#1d2a22]">
       {r.video ? (
         <video ref={video} src={r.video} poster={r.poster} muted loop playsInline preload="none" className="absolute inset-0 h-full w-full object-cover" />
       ) : (
         // placeholder até os reels reais chegarem
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center"
-          style={{ background: "repeating-linear-gradient(135deg, #1e201b 0 14px, #191b17 14px 28px)" }}>
-          <span className="label !text-signal">PLACEHOLDER</span>
-          <span className="font-mono text-xs text-bone/60">Reel de depoimento<br />/public/reels/{r.id}.mp4</span>
+          style={{ background: "linear-gradient(160deg, #2e9c5a 0%, #114e2f 100%)" }}>
+          <span className="rounded-full bg-white/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">Placeholder</span>
+          <span className="text-xs text-white/75">Reel de depoimento<br />/public/reels/{r.id}.mp4</span>
         </div>
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
-      <div className="absolute right-3 bottom-28 flex flex-col items-center gap-4 text-bone">
+      <div className="absolute right-3 bottom-28 flex flex-col items-center gap-4 text-white">
         <div className="flex flex-col items-center"><Icon d={ICONS.heart} label="Curtidas" /><span className="text-[11px]">{r.curtidas}</span></div>
         <Icon d={ICONS.comment} label="Comentários" />
         <Icon d={ICONS.send} label="Compartilhar" />
       </div>
       <div className="absolute inset-x-3 bottom-4 text-left">
         <div className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-signal font-mono text-[10px] font-bold text-ink">JV</span>
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-leaf text-[10px] font-bold text-white">JV</span>
           <span className="text-[13px] font-semibold">{contato.instagram}</span>
-          <span className="rounded border border-bone/50 px-1.5 py-0.5 text-[10px]">Seguir</span>
+          <span className="rounded border border-white/60 px-1.5 py-0.5 text-[10px]">Seguir</span>
         </div>
-        <p className="mt-2 line-clamp-2 text-[12.5px] leading-snug text-bone/90">{r.legenda}</p>
-        <p className="mt-2 inline-block bg-signal px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-ink">
+        <p className="mt-2 line-clamp-2 text-[12.5px] leading-snug text-white/90">{r.legenda}</p>
+        <p className="mt-2 inline-block rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-leaf-deep">
           {objetivosLabel[r.objetivo]} · {r.destaque}
         </p>
       </div>
@@ -114,13 +114,13 @@ export default function ReelPhone({ itens }: { itens: Resultado[] }) {
       <div className="[perspective:1600px]">
         <div ref={phone} className="relative will-change-transform [transform-style:preserve-3d]" style={{ transform: "rotateX(6deg) rotateY(-16deg)" }}>
           {/* espessura do aparelho */}
-          <div className="absolute inset-0 translate-x-[10px] translate-y-[6px] rounded-[46px] bg-black/60 blur-xl" aria-hidden />
+          <div className="absolute inset-0 translate-x-[10px] translate-y-[6px] rounded-[46px] bg-leaf-deep/30 blur-2xl" aria-hidden />
           <div className="relative h-[min(640px,76svh)] w-[min(310px,72vw)] rounded-[44px] border border-white/15 bg-[#050505] p-[10px] shadow-[inset_0_0_0_2px_#222]">
             <div className="absolute left-1/2 top-[18px] z-20 h-[22px] w-[90px] -translate-x-1/2 rounded-full bg-black" aria-hidden />
             <div className="relative h-full w-full overflow-hidden rounded-[34px]">
               <div className="absolute inset-x-0 top-0 z-10 flex justify-between px-5 pt-12 text-[15px] font-semibold">
                 <span>Reels</span>
-                <span className="font-mono text-[10px] text-bone/70">{String(active + 1).padStart(2, "0")}/{String(itens.length).padStart(2, "0")}</span>
+                <span className="text-[11px] text-white/70">{String(active + 1).padStart(2, "0")}/{String(itens.length).padStart(2, "0")}</span>
               </div>
               <div
                 ref={scroller}
@@ -138,14 +138,14 @@ export default function ReelPhone({ itens }: { itens: Resultado[] }) {
           </div>
         </div>
       </div>
-      <p className="label mt-6">Deslize dentro do celular ↕</p>
+      <p className="mt-6 text-[13px] font-medium text-mute">Deslize dentro do celular ↕</p>
       {atual && (
         <a
           href={atual.link}
           target="_blank"
           rel="noopener"
           onClick={() => track("instagram_click", { reel: atual.id })}
-          className="btn-ghost mt-4"
+          className="btn-soft mt-4"
         >
           Ver no Instagram ↗
         </a>

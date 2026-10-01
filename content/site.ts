@@ -5,53 +5,67 @@ export const contato = {
   titulo: "Nutricionista Esportivo",
   crn: "CRN-1 ———", // TODO: número do CRN
   instagram: "nutrijoaovitorr",
+  seguidores: "7 mil", // seguidores no Instagram
   whatsapp: "5562991628357",
   cidades: ["Pontalina", "Goiânia", "Online"],
 };
 
 export const hero = {
-  objeto: "OBJETO / 001 — CORPO HUMANO EM TREINO",
-  titulo: ["Seu corpo", "tem dados."],
-  subtitulo: "Eu leio cada um deles.",
-  apoio:
-    "Nutrição esportiva guiada por avaliação antropométrica ISAK. Presencial em Goiás ou online, de qualquer lugar.",
-  cta: "Começar meu diagnóstico",
-  capitulos: [
-    { codigo: "01 / SUPERFÍCIE", titulo: "O que o espelho mostra", texto: "Peso e aparência contam só parte da história." },
-    { codigo: "02 / CAMADAS", titulo: "O que a balança esconde", texto: "Dobras, perímetros e composição revelam onde está a gordura e onde está o músculo." },
-    { codigo: "03 / ESTRATÉGIA", titulo: "Dados viram plano", texto: "Cada número da avaliação vira uma decisão no seu prato e no seu treino." },
-  ],
+  selo: "Nutricionista · Goiás e online",
+  titulo: ["Mudar o corpo", "pode ser"],
+  destaque: "leve.",
+  apoio: "Sem dieta chata, sem passar fome. Um plano com a comida que você gosta, no ritmo da sua rotina, e eu do seu lado no WhatsApp.",
+  ctaWhats: "Quero começar",
+  ctaQuiz: "Descobrir meu perfil em 2 min",
+  antes: ["Cansaço", "Sem energia", "Roupa apertando"],
+  depois: ["Disposição", "Autoestima", "Treino rendendo"],
 };
 
-export const dor = {
-  linhas: [
-    "Você treina.",
-    "Você se esforça.",
-    "Corta doce, faz cardio,",
-    "e o corpo não responde.",
-  ],
-  fecho:
-    "O problema quase nunca é falta de esforço. É falta de estratégia — feita para o seu corpo, sua rotina e seu treino.",
-};
-
-export const metodo = [
-  { n: "01", titulo: "Avaliação", texto: "Antropometria ISAK, histórico, rotina, treino e exames. A gente começa pelos dados, não pelo achismo.", dado: "8 DOBRAS · 12 PERÍMETROS" },
-  { n: "02", titulo: "Plano", texto: "Um plano alimentar que cabe no seu dia — com as comidas que você gosta e o horário do seu treino.", dado: "100% INDIVIDUAL" },
-  { n: "03", titulo: "Ajustes", texto: "Acompanhamento próximo pelo WhatsApp. O plano muda quando o seu corpo muda.", dado: "SUPORTE CONTÍNUO" },
-  { n: "04", titulo: "Resultado", texto: "Reavaliação com números novos. Você vê, em dados, o que mudou.", dado: "COMPARATIVO REAL" },
+export const faixa = [
+  "Comida de verdade",
+  "Sem cortar o que você gosta",
+  "Acompanhamento no WhatsApp",
+  "Online para todo o Brasil",
+  "Avaliação ISAK",
+  "Plano que cabe na rotina",
 ];
 
-export const isak = {
-  titulo: "Medir é o que separa palpite de estratégia.",
-  texto:
-    "A antropometria ISAK é o padrão internacional de medidas corporais. Com ela, sabemos quanto do seu peso é músculo, quanto é gordura — e onde cada um está.",
-  medidas: [
-    { rotulo: "MASSA MAGRA", valor: 64.2, unidade: "%", delta: "+3,1" },
-    { rotulo: "GORDURA CORPORAL", valor: 15.8, unidade: "%", delta: "−4,6" },
-    { rotulo: "Σ 8 DOBRAS", valor: 78, unidade: "mm", delta: "−31" },
-    { rotulo: "PERÍMETRO BRAÇO", valor: 38.5, unidade: "cm", delta: "+2,0" },
+export const identifica = {
+  titulo: "Você se identifica com alguma dessas?",
+  sub: "Toque nas que têm a sua cara.",
+  itens: [
+    "Começo a dieta na segunda e paro na quarta",
+    "Treino, mas o corpo não muda",
+    "Sinto fome à noite e belisco",
+    "Não tenho tempo pra cozinhar",
+    "Já tentei várias dietas da internet",
+    "O fim de semana desfaz tudo",
   ],
-  nota: "Valores ilustrativos de um acompanhamento de 12 semanas.",
+  resposta: "Nada disso é falta de força de vontade. É falta de um plano feito para você.",
+};
+
+export const passos = [
+  { n: "1", titulo: "A gente conversa", texto: "Online ou presencial. Eu entendo sua rotina, seu treino e o que você gosta de comer.", tempo: "~ 1 hora" },
+  { n: "2", titulo: "Você recebe seu plano", texto: "Com comida de verdade, fácil de seguir, encaixado nos seus horários.", tempo: "em poucos dias" },
+  { n: "3", titulo: "Ajustamos juntos", texto: "Travou? Me chama no WhatsApp. O plano muda quando a sua vida muda.", tempo: "todo o processo" },
+];
+
+export const beneficios = [
+  { titulo: "Energia o dia todo", texto: "Chega de sono depois do almoço e de cansaço no treino.", cor: "mint" },
+  { titulo: "Sem passar fome", texto: "Você come bem, sente prazer e ainda vê resultado.", cor: "sand" },
+  { titulo: "Fim de semana livre", texto: "O churrasco e a pizza entram no plano, sem culpa.", cor: "white" },
+  { titulo: "Resultado que fica", texto: "Hábito que se mantém, não efeito sanfona.", cor: "mint" },
+] as const;
+
+export const medir = {
+  titulo: "A balança não conta a história toda.",
+  texto:
+    "Duas pessoas com o mesmo peso podem ter corpos muito diferentes. Com a avaliação ISAK eu vejo quanto é músculo e quanto é gordura, e assim acompanho o que realmente importa.",
+  barras: [
+    { rotulo: "Pessoa A", magra: 62, gordura: 22 },
+    { rotulo: "Pessoa B", magra: 48, gordura: 36 },
+  ],
+  nota: "Mesmo peso: 72 kg. Valores ilustrativos.",
 };
 
 export type Plano = {
@@ -71,7 +85,7 @@ export const planos: Plano[] = [
     formato: "Mensal",
     preco: null,
     periodo: "/mês",
-    itens: ["Avaliação online completa", "Plano alimentar individual", "Suporte pelo WhatsApp", "1 ajuste no mês"],
+    itens: ["Consulta online", "Plano alimentar individual", "Suporte pelo WhatsApp", "1 ajuste no mês"],
   },
   {
     id: "online-trimestral",
@@ -80,13 +94,7 @@ export const planos: Plano[] = [
     preco: null,
     periodo: "/3 meses",
     destaque: true,
-    itens: [
-      "Tudo do mensal",
-      "Ajustes a cada 15 dias",
-      "Reavaliação com comparativo",
-      "Estratégia para fim de semana e viagens",
-      "Prioridade no suporte",
-    ],
+    itens: ["Tudo do mensal", "Ajustes a cada 15 dias", "Reavaliação com comparativo", "Estratégia para fim de semana e viagens", "Prioridade no suporte"],
   },
   {
     id: "presencial",
@@ -94,30 +102,28 @@ export const planos: Plano[] = [
     formato: "Pontalina · Goiânia",
     preco: null,
     periodo: "/consulta",
-    itens: ["Antropometria ISAK completa", "Plano alimentar individual", "Retorno com reavaliação", "Suporte pelo WhatsApp"],
+    itens: ["Avaliação ISAK completa", "Plano alimentar individual", "Retorno com reavaliação", "Suporte pelo WhatsApp"],
   },
 ];
 
 export const sobre = {
-  titulo: "Prazer, João Vitor.",
+  titulo: "Oi, eu sou o João.",
   texto: [
-    "Nutricionista esportivo e antropometrista ISAK nível 1. Atendo quem vive a academia — do atleta ao aluno que treina às 6h antes do trabalho.",
-    "Meu trabalho é simples de explicar: medir, entender sua rotina e transformar isso num plano que você consegue seguir.",
+    "Sou nutricionista esportivo e antropometrista ISAK. Atendo desde atletas até quem só quer se sentir bem e evoluir na academia.",
+    "Meu jeito de trabalhar é simples: entender sua rotina, montar um plano que você consegue seguir e estar perto até o resultado aparecer.",
   ], // TODO: revisar com a voz do João
-  credenciais: ["Nutricionista Esportivo", "Antropometrista ISAK 1", "Atendimento online em todo o Brasil"],
+  credenciais: ["Nutricionista Esportivo", "Antropometrista ISAK", "Atendimento online em todo o Brasil"],
 };
 
 export const faq = [
-  { p: "A consultoria online funciona mesmo?", r: "Funciona. A avaliação é guiada por vídeo e fotos padronizadas, e o acompanhamento é mais próximo do que no presencial: você fala comigo pelo WhatsApp sempre que precisar." },
-  { p: "Preciso de balança ou adipômetro em casa?", r: "Não. Eu te passo um protocolo simples de medidas com fita métrica e fotos. Quem pode vir ao consultório faz a antropometria ISAK completa." },
-  { p: "E se eu não conseguir seguir a dieta?", r: "Então o plano estava errado, não você. Ele é montado com as comidas que você gosta, nos horários da sua rotina — e ajustado sempre que travar." },
-  { p: "Em quanto tempo vejo resultado?", r: "Cada corpo responde num ritmo, e eu não prometo prazos. O que garanto é acompanhamento próximo e ajustes baseados em dados, não em achismo." },
-  { p: "Atende quem só quer melhorar na academia?", r: "Sim — essa é a maior parte dos meus pacientes. Não precisa ser atleta para ter estratégia." },
+  { p: "Consultoria online funciona mesmo?", r: "Funciona, e muito bem. A gente conversa por vídeo, você recebe o plano no celular e fala comigo pelo WhatsApp sempre que precisar." },
+  { p: "Vou ter que cortar tudo o que eu gosto?", r: "Não. O plano é montado com as comidas que você já gosta. A ideia é você conseguir manter, não sofrer por 30 dias." },
+  { p: "Não tenho tempo pra cozinhar. Dá certo?", r: "Dá. Eu monto opções práticas e rápidas, e até estratégias para quem come fora ou pede delivery." },
+  { p: "Preciso ser atleta ou treinar muito?", r: "Não. A maioria dos meus pacientes são pessoas comuns que treinam na academia e querem se sentir melhor." },
+  { p: "Em quanto tempo vejo resultado?", r: "Cada corpo tem seu ritmo e eu não prometo prazos. O que eu garanto é acompanhamento de perto e ajustes até o seu corpo responder." },
 ];
 
-export const privacidade = {
-  atualizado: "outubro de 2026",
-};
+export const privacidade = { atualizado: "outubro de 2026" };
 
 // Escassez só quando for verdade: o João liga quando abrir agenda limitada.
-export const vagas = { ativo: false, texto: "Agenda da consultoria online aberta para novembro — vagas limitadas." };
+export const vagas = { ativo: false, texto: "Agenda da consultoria online aberta para novembro, com vagas limitadas." };
