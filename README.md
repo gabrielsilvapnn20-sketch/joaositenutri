@@ -18,16 +18,16 @@ Landing page leve, nas cores do João (branco e verde). O quiz não é o caminho
 
 | Parte | Onde | O que faz |
 |---|---|---|
-| Hero com transformação | `src/components/Hero.tsx` + `src/lib/body.ts` | Mulher e homem desenhados em linhas que passam de "antes" (cinza, postura curvada, mais pesados) para "depois" (verdes, eretos). Acontece sozinho ao abrir e a pessoa pode arrastar o controle. |
+| Hero "corpo feito de comida" | `Hero.tsx`, `FoodCanvas.tsx`, `src/lib/foodFigure.ts`, `src/lib/foods.ts` | Uma nuvem de fast food (hambúrguer, batata, refri, donut, pizza) se transforma em comida de verdade e forma uma pessoa correndo. Mensagens do João aparecem num balão preso ao corredor. Passar o dedo ou o mouse espalha a comida. Tudo desenhado por código, sem imagens. |
 | Faixa | `Faixa.tsx` | Letreiro com os diferenciais. |
 | "Você se identifica?" | `Identifica.tsx` | A pessoa toca nas situações que vive; aparece a mensagem de acolhimento e o convite para o teste. |
-| Como funciona | `ComoFunciona.tsx` | 3 passos simples, com foco em facilidade. |
+| Como funciona (jornada) | `Acompanhamento.tsx` | O corredor de comida passa, com o scroll, por 5 estações do acompanhamento (avaliação, plano, conversa no WhatsApp, motivação, resultado), cada uma com sua mini-animação. Ao longo do caminho o corpo afina e o ritmo aumenta. |
 | O que muda | `Beneficios.tsx` | Benefícios em cards suaves. |
 | Resultados | `Resultados.tsx`, `ReelPhone.tsx`, `Mosaic.tsx` | Celular 3D com os reels de depoimento, filtro por objetivo e antes → depois em mosaico. |
 | Avaliação ISAK | `Medir.tsx` | "A balança não conta a história toda": duas pessoas com o mesmo peso e composições diferentes. |
 | Convite ao teste | `QuizTeaser.tsx` | Abre o quiz em nova aba. |
 | Planos, Sobre, FAQ, CTA final | `Planos.tsx`, `Sobre.tsx`, `Faq.tsx`, `CtaFinal.tsx` | Trimestral em destaque, CTAs para o WhatsApp. |
-| Quiz gamificado | `/diagnostico` → `src/components/jornada/` | 6 fases com XP: objetivo → corpo (o modelo muda com sexo, peso e altura) → rotina (mapa do dia) → sabotadores → desbloqueio (lead) → diagnóstico. |
+| Quiz gamificado | `/diagnostico` → `src/components/jornada/` | 6 fases com XP: objetivo → corpo (a pessoa de comida fica mais cheia ou mais magra conforme peso e altura) → rotina (mapa do dia) → sabotadores → desbloqueio (lead) → diagnóstico. |
 | Diagnóstico com IA | `src/app/api/diagnostico/route.ts` | Claude personaliza os insights na voz do João, com regras de ética rígidas. Sem `ANTHROPIC_API_KEY`, usa o diagnóstico por regras (`src/lib/diagnostico.ts`). |
 | Leads | Supabase (`supabase/leads.sql`) | Salva respostas, perfil, score e UTMs. Sem Supabase, o lead segue só pelo WhatsApp. |
 | Card para stories | `src/lib/shareCard.ts` | PNG 1080×1920 com o perfil da pessoa marcando @nutrijoaovitorr. |

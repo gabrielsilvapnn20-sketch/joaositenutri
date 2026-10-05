@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import BodyCanvas, { cssFont } from "@/components/BodyCanvas";
-import type { BodyState } from "@/lib/body";
+import FoodCanvas from "@/components/FoodCanvas";
+import type { SceneControls } from "@/lib/foodFigure";
 import {
   SABOTADORES,
   diagnosticoPorRegras,
@@ -31,6 +31,8 @@ const FASES = [
 ] as const;
 
 const XP_POR_FASE = 120;
+
+const cssVar = (name: string, fallback: string) => getComputedStyle(document.body).getPropertyValue(name).trim() || fallback;
 
 const OBJETIVOS: { id: Objetivo; codigo: string; titulo: string; texto: string }[] = [
   { id: "hipertrofia", codigo: "Hipertrofia", titulo: "Ganhar massa", texto: "Crescer de verdade, sem ganhar barriga junto." },
@@ -327,11 +329,11 @@ function FaseCorpo({ r, set, onNext, onBack }: { r: Rascunho; set: SetFn; onNext
   const rRef = useRef(r);
   rRef.current = r;
   const girthAtual = useRef(1);
-  const getState = useCallback((t: number): BodyState => {
+  const getControls = useCallback((): SceneControls => {
     const b = imc(rRef.current);
-    const alvo = Math.min(1.42, Math.max(0.82, 0.86 + ((b - 18) / 17) * 0.52));
+    const alvo = Math.min(1.45, Math.max(0.85, 0.9 + ((b - 18) / 17) * 0.55));
     girthAtual.current += (alvo - girthAtual.current) * 0.1;
-    return { rotation: 0.4 + Math.sin(t * 0.5) * 0.5, girth: girthAtual.current, sex: rRef.current.sexo === "feminino" ? "f" : "m", tone: 1 };
+    return { form: 1, pose: "stand", girth: girthAtual.current, size: 0.95 };
   }, []);
   const valorImc = imc(r);
 
@@ -344,7 +346,7 @@ function FaseCorpo({ r, set, onNext, onBack }: { r: Rascunho; set: SetFn; onNext
         <div className="relative aspect-square max-h-[56svh] w-full overflow-hidden rounded-[28px] bg-mint lg:aspect-[4/5]">
           <span className="label absolute left-3 top-3">Seu modelo</span>
           <span className="label absolute right-3 top-3 tabular-nums">IMC {valorImc.toFixed(1).replace(".", ",")}</span>
-          <BodyCanvas getState={getState} scale={0.9} className="absolute inset-0 h-full w-full" />
+          <FoodCanvas getControls={getControls} count={260} className="absolute inset-0 h-full w-full" />
           <p className="absolute inset-x-3 bottom-3 text-[11px] leading-snug text-mute">
             O IMC não diferencia músculo de gordura. <span className="text-ink">É por isso que eu meço.</span>
           </p>
@@ -567,15 +569,14 @@ function Analisando() {
     const t = setInterval(() => setI((x) => Math.min(x + 1, passos.length - 1)), 800);
     return () => clearInterval(t);
   }, [passos.length]);
-  const getState = useCallback(
-    (t: number): BodyState => ({ rotation: t * 0.9, explode: 0.35 + Math.sin(t * 1.4) * 0.25, labels: 1, scan: (t * 0.5) % 1, girth: 1, tone: 1, sex: "f" }),
-    [],
-  );
+  // a comida fica se transformando enquanto o diagnóstico "carrega"
+  const getControls = useCallback((t: number): SceneControls => ({ form: Math.floor(t / 1.6) % 2 ? 1 : 0, pose: "run", speed: 7 }), []);
+
   return (
     <div className="grid min-h-[70svh] place-items-center text-center">
       <div className="w-full max-w-md">
         <div className="relative mx-auto aspect-square w-full max-w-[360px]">
-          <BodyCanvas getState={getState} scale={0.85} className="absolute inset-0 h-full w-full" />
+          <FoodCanvas getControls={getControls} count={240} interactive={false} className="absolute inset-0 h-full w-full" />
         </div>
         <p className="label mt-6 !text-leaf">ANALISANDO</p>
         <ul className="mt-4 space-y-2 text-sm" aria-live="polite">
@@ -603,7 +604,7 @@ function FaseResultado({ r, lead, d, planoPreferido, onReset }: { r: Respostas; 
   async function compartilhar() {
     setCompartilhando(true);
     try {
-      const blob = await gerarCardStories(d.perfil, lead.nome || "Eu", cssFont("--font-sans", "sans-serif"), cssFont("--font-serif", "serif"));
+      const blob = await gerarCardStories(d.perfil, lead.nome || "Eu", cssVar("--font-sans", "sans-serif"), cssVar("--font-serif", "serif"));
       if (!blob) return;
       const file = new File([blob], "meu-perfil-de-treino.png", { type: "image/png" });
       if (navigator.canShare?.({ files: [file] })) {

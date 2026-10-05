@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useCallback } from "react";
-import BodyCanvas from "./BodyCanvas";
+import FoodCanvas from "./FoodCanvas";
 import { track } from "@/lib/track";
 
 /** Convite para o quiz — abre em nova aba, só para quem quiser. */
 export default function QuizTeaser() {
-  const getState = useCallback((t: number) => ({ rotation: t * 0.5, girth: 1, sex: "f" as const, tone: 1, scan: (t * 0.3) % 1, labels: 1 }), []);
+  const getControls = useCallback(() => ({ form: 1, pose: "wave" as const, size: 0.9 }), []);
   return (
     <section className="py-20 sm:py-28">
       <div className="gutter">
@@ -31,7 +31,7 @@ export default function QuizTeaser() {
           </div>
           <div className="relative min-h-[320px]">
             <div className="absolute inset-8 rounded-blob bg-white/70" />
-            <BodyCanvas getState={getState} scale={0.82} className="absolute inset-0 h-full w-full" ariaLabel="Ilustração do teste de perfil" />
+            <FoodCanvas getControls={getControls} count={260} seed={3} className="absolute inset-0 h-full w-full" ariaLabel="Pessoa feita de comida acenando" />
           </div>
         </div>
       </div>

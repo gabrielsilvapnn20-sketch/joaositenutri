@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Faixa from "@/components/Faixa";
 import Identifica from "@/components/Identifica";
-import ComoFunciona from "@/components/ComoFunciona";
+import Acompanhamento from "@/components/Acompanhamento";
 import Beneficios from "@/components/Beneficios";
 import Resultados from "@/components/Resultados";
 import Medir from "@/components/Medir";
@@ -21,7 +21,7 @@ export default function Home() {
         <Hero />
         <Faixa />
         <Identifica />
-        <ComoFunciona />
+        <Acompanhamento />
         <Beneficios />
         <Resultados />
         <Medir />

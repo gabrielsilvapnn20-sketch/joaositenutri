@@ -1,4 +1,4 @@
-import { drawBody } from "./body";
+import { FoodScene } from "./foodFigure";
 import type { Perfil } from "./diagnostico";
 import { contato } from "@content/site";
 
@@ -29,11 +29,17 @@ export async function gerarCardStories(perfil: Perfil, nome: string, sans: strin
   ctx.ellipse(W / 2, 730, 420, 450, 0, 0, Math.PI * 2);
   ctx.fill();
 
-  ctx.save();
-  ctx.translate(0, 230);
-  drawBody(ctx, { width: W, height: 1060, dpr: 2.4, font: sans, scale: 0.95, offsetX: -0.17, state: { rotation: 0.55, girth: 1, sex: "f", tone: 1 } });
-  drawBody(ctx, { width: W, height: 1060, dpr: 2.4, font: sans, scale: 0.95, offsetX: 0.17, state: { rotation: -0.5, girth: 1, sex: "m", tone: 1 } });
-  ctx.restore();
+  // corpo feito de comida, já formado, acenando
+  const fig = document.createElement("canvas");
+  fig.width = 900;
+  fig.height = 980;
+  const fctx = fig.getContext("2d");
+  if (fctx) {
+    const scene = new FoodScene(380, 5);
+    for (let i = 0; i < 240; i++) scene.step(0.05, i * 0.05, { form: 1, pose: "wave" }, fig.width, fig.height);
+    scene.draw(fctx, fig.width, fig.height);
+    ctx.drawImage(fig, (W - fig.width) / 2, 230);
+  }
 
   ctx.fillStyle = "#2E9C5A";
   ctx.font = `600 34px ${sans}`;

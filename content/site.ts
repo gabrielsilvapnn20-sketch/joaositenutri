@@ -12,13 +12,16 @@ export const contato = {
 
 export const hero = {
   selo: "Nutricionista · Goiás e online",
-  titulo: ["Mudar o corpo", "pode ser"],
-  destaque: "leve.",
-  apoio: "Sem dieta chata, sem passar fome. Um plano com a comida que você gosta, no ritmo da sua rotina, e eu do seu lado no WhatsApp.",
+  titulo: ["Seu corpo é feito", "do que você"],
+  destaque: "come.",
+  apoio: "E dá para mudar sem dieta chata nem passar fome: comida de verdade, no ritmo da sua rotina, e eu do seu lado no WhatsApp.",
   ctaWhats: "Quero começar",
   ctaQuiz: "Descobrir meu perfil em 2 min",
-  antes: ["Cansaço", "Sem energia", "Roupa apertando"],
-  depois: ["Disposição", "Autoestima", "Treino rendendo"],
+  antes: "Fast food, cansaço e nenhum plano",
+  depois: "Comida de verdade + acompanhamento",
+  // mensagens que "chegam" do João enquanto o corpo corre
+  mensagens: ["Bora! Hoje o treino vai render 💪", "Mandou bem na semana 👏", "Sábado livre? Tá no plano 😉", "Bebeu água hoje? 💧"],
+  selos: ["Plano sob medida", "Ajustes toda semana", "Suporte no WhatsApp"],
 };
 
 export const faixa = [
@@ -44,11 +47,24 @@ export const identifica = {
   resposta: "Nada disso é falta de força de vontade. É falta de um plano feito para você.",
 };
 
-export const passos = [
-  { n: "1", titulo: "A gente conversa", texto: "Online ou presencial. Eu entendo sua rotina, seu treino e o que você gosta de comer.", tempo: "~ 1 hora" },
-  { n: "2", titulo: "Você recebe seu plano", texto: "Com comida de verdade, fácil de seguir, encaixado nos seus horários.", tempo: "em poucos dias" },
-  { n: "3", titulo: "Ajustamos juntos", texto: "Travou? Me chama no WhatsApp. O plano muda quando a sua vida muda.", tempo: "todo o processo" },
-];
+export const jornada = {
+  titulo: "Não é só um cardápio.",
+  destaque: "É alguém correndo junto com você.",
+  estacoes: [
+    { id: "avaliacao", titulo: "Avaliação", texto: "Medidas, rotina, treino e o que você gosta de comer. A gente começa por você." },
+    { id: "plano", titulo: "Plano sob medida", texto: "Comida de verdade, montada para caber no seu dia. Nada de cardápio impossível." },
+    { id: "conversa", titulo: "Acompanhamento", texto: "Travou? Me chama no WhatsApp. O plano muda quando a sua vida muda." },
+    { id: "motivacao", titulo: "Motivação", texto: "Nos dias difíceis eu lembro você do porquê começou. Constância vem de apoio." },
+    { id: "resultado", titulo: "Resultado", texto: "Reavaliação com números novos. Você vê, e sente, o que mudou." },
+  ],
+  conversa: [
+    { de: "voce", texto: "Saí do plano no sábado 😅" },
+    { de: "joao", texto: "Normal! Faz parte. Segunda a gente segue 💪" },
+    { de: "joao", texto: "Já ajustei seu jantar pra semana." },
+  ],
+};
+
+export const passos = jornada.estacoes; // compatibilidade
 
 export const beneficios = [
   { titulo: "Energia o dia todo", texto: "Chega de sono depois do almoço e de cansaço no treino.", cor: "mint" },
